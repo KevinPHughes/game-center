@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind configuration - extending the default theme
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        // Using Inter font, linked below
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen font-sans p-4">
+
+    <h1 class="text-4xl font-bold text-gray-800 mb-12">Welcome to the Game Hub!</h1>
+
+    <div class="flex flex-col space-y-6">
+        <a href="tic-tac-toe.html" class="px-8 py-4 bg-blue-600 text-white text-2xl font-semibold rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200 text-center">
+            Play Tic Tac Toe
+        </a>
+        <a href="hangman.html" class="px-8 py-4 bg-green-600 text-white text-2xl font-semibold rounded-lg shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-200 text-center">
+            Play Hangman
+        </a>
+        </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

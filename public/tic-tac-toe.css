@@ -1,0 +1,49 @@
+/* Add any custom CSS rules here if needed */
+/* Tailwind handles most styling via classes in the HTML */
+
+/* Example: Style for X and O marks */
+.cell.x {
+    color: #3B82F6; /* blue-600 */
+}
+
+.cell.o {
+    color: #EC4899; /* pink-500 */
+}
+
+/* Style for winning cells (example) */
+.cell.win {
+    background-color: #A7F3D0 !important; /* emerald-200 */
+}
+
+/* Ensure cells maintain aspect ratio and fill container */
+.cell {
+    aspect-ratio: 1 / 1; /* Make cells square */
+}
+
+/* Basic body styling if not using Tailwind body classes */
+/* body {
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f3f4f6; /* gray-100 */
+/* } */
+
+/* Style for the score display */
+#scoreDisplay {
+    /* Add any specific styles for the score display if needed */
+    /* Tailwind classes in HTML handle basic layout and text styling */
+}
+
+/* Style for player name inputs */
+#playerXName,
+#playerOName {
+    /* Add any specific styles for the input fields if needed */
+}
+
+/* Style for the clear scores button */
+#clearScoresButton {
+     /* Add any specific styles for the button if needed */
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman Game</title>
+    <link rel="stylesheet" href="hangman.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind configuration
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    // Keep monospace for other potential uses, but not strictly needed for SVG hangman
+                    mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono", "Courier New", 'monospace'],
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen font-sans p-4 relative">
+
+    <div id="loseOverlay" class="overlay"></div>
+
+    <h1 class="text-4xl font-bold text-gray-800 mb-8">Hangman</h1>
+
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md text-center">
+
+        <div id="wordSettingArea">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Set the Secret Word</h2>
+            <input type="text" id="secretWordInput" placeholder="Enter the secret word" class="p-3 border rounded w-full mb-4 text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button id="setWordButton" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200">
+                Set Word
+            </button>
+        </div>
+
+        <div id="guessingArea" class="hidden">
+             <div class="flex justify-center mb-6">
+                 <svg id="hangmanSVG" width="200" height="250" viewBox="0 0 200 250">
+                    <line id="gallowsBase" x1="10" y1="240" x2="150" y2="240" stroke="#333" stroke-width="8" class="hangman-part"></line>
+                    <line id="gallowsPost" x1="40" y1="240" x2="40" y2="20" stroke="#333" stroke-width="8" class="hangman-part"></line>
+                    <line id="gallowsBeam" x1="40" y1="20" x2="120" y2="20" stroke="#333" stroke-width="8" class="hangman-part"></line>
+                    <line id="gallowsRope" x1="120" y1="20" x2="120" y2="60" stroke="#333" stroke-width="4" class="hangman-part"></line>
+
+                    <circle id="manHead" cx="120" cy="80" r="20" stroke="#333" stroke-width="4" fill="transparent" class="hangman-part hidden-part"></circle>
+                    <line id="manBody" x1="120" y1="100" x2="120" y2="150" stroke="#333" stroke-width="4" class="hangman-part hidden-part"></line>
+                    <line id="manLeftArm" x1="120" y1="110" x2="90" y2="130" stroke="#333" stroke-width="4" class="hangman-part hidden-part"></line>
+                    <line id="manRightArm" x1="120" y1="110" x2="150" y2="130" stroke="#333" stroke-width="4" class="hangman-part hidden-part"></line>
+                    <line id="manLeftLeg" x1="120" y1="150" x2="90" y2="180" stroke="#333" stroke-width="4" class="hangman-part hidden-part"></line>
+                    <line id="manRightLeg" x1="120" y1="150" x2="150" y2="180" stroke="#333" stroke-width="4" class="hangman-part hidden-part"></line>
+                 </svg>
+            </div>
+
+
+            <div id="maskedWordDisplay" class="text-3xl font-bold tracking-widest mb-6"></div>
+
+            <div id="usedLettersDisplay" class="text-lg text-gray-600 mb-6">Used Letters: </div>
+
+            <div id="gameStatus" class="text-xl font-semibold text-gray-700 mb-4 h-6"></div>
+
+            <div id="keyboard" class="grid grid-cols-7 gap-1 mb-6">
+                </div>
+
+
+            <button id="playAgainButton" class="px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg shadow hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition duration-200 hidden">
+                Play Again
+            </button>
+        </div>
+
+    </div>
+
+
+    <div class="mt-8">
+         <a href="index.html" class="px-6 py-3 bg-gray-600 text-white font-semibold rounded-lg shadow hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-200 text-center">
+            Back to Games
+        </a>
+    </div>
+
+
+    <script src="hangman.js"></script>
+</body>
+</html>

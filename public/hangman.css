@@ -1,0 +1,175 @@
+/* Add Hangman specific styles here */
+
+body {
+    /* Ensure body covers full height and centers content */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Removed: justify-content: center; */ /* Allow content to flow from top and enable scrolling */
+    position: relative; /* Needed for absolute positioning of overlay */
+    /* Removed: overflow: hidden; */ /* Allow scrolling when content exceeds viewport */
+}
+
+/* Style for the game area container */
+.game-area {
+    /* Tailwind classes in HTML handle most styling */
+}
+
+/* Style for the hangman drawing area */
+#hangmanSVG {
+    /* Add any specific styles for the SVG container if needed */
+    /* You can set stroke colors/widths directly in the SVG or here */
+    /* Ensure SVG scales with its container */
+    max-width: 100%;
+    height: auto;
+}
+
+/* Style for the masked word display */
+#maskedWordDisplay {
+    /* Add any specific styles for the masked word if needed */
+}
+
+/* Style for input fields */
+#secretWordInput {
+    /* Tailwind classes in HTML handle most styling */
+}
+
+/* Style for buttons */
+#setWordButton,
+#playAgainButton {
+    /* Tailwind classes in HTML handle most styling */
+}
+
+/* Style for used letters display */
+#usedLettersDisplay {
+    /* Add any specific styles for used letters if needed */
+}
+
+/* Style for game status message */
+#gameStatus {
+    /* Add any specific styles for the status message if needed */
+}
+
+/* Utility class to hide elements */
+.hidden {
+    display: none;
+}
+
+/* Class to hide SVG parts */
+.hidden-part {
+    display: none;
+}
+
+/* --- Animations for Win/Lose --- */
+
+/* Keyframes for a subtle shake animation (for losing status text) */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-5px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+    100% { transform: translateX(0); }
+}
+
+/* Keyframes for a pulse animation (for winning status text) */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Class to apply the shake animation */
+.lose-animation {
+    animation: shake 0.5s ease-in-out;
+}
+
+/* Class to apply the pulse animation */
+.win-animation {
+    animation: pulse 1s infinite ease-in-out; /* Infinite pulse */
+}
+
+/* Style the status message text color on win/lose */
+.win-text {
+    color: #10B981; /* Tailwind emerald-500 */
+}
+
+.lose-text {
+    color: #EF4444; /* Tailwind red-500 */
+}
+
+/* --- Full Screen Effects --- */
+
+/* Base style for the full-screen overlay */
+.overlay {
+    position: fixed; /* Fixed position relative to the viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0; /* Initially transparent */
+    visibility: hidden; /* Initially hidden from layout and interactions */
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; /* Smooth transition */
+    z-index: 10; /* Ensure it's above other content */
+    pointer-events: none; /* Allow clicks to pass through when hidden */
+}
+
+/* Style for the lose overlay */
+#loseOverlay {
+    background-color: rgba(239, 68, 68, 0.3); /* Semi-transparent red */
+}
+
+/* Class to show the overlay */
+.overlay.show-overlay {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto; /* Enable interactions when visible (if needed, not for this overlay) */
+}
+
+/* Keyframes for a subtle green background pulse (for winning) */
+@keyframes winBackgroundPulse {
+    0% { background-color: #D1FAE5; /* Tailwind green-100 */ }
+    50% { background-color: #A7F3D0; /* Tailwind emerald-200 */ }
+    100% { background-color: #D1FAE5; /* Tailwind green-100 */ }
+}
+
+/* Class to apply the win background pulse to the body */
+body.win-background {
+    animation: winBackgroundPulse 1.5s infinite ease-in-out; /* Infinite pulse */
+}
+
+/* --- On-Screen Keyboard Styles --- */
+#keyboard {
+    /* Tailwind grid classes handle the layout */
+}
+
+/* Style for individual letter buttons */
+.keyboard-letter {
+    /* Tailwind classes handle most styling (padding, background, text) */
+    padding: 0.75rem 0.5rem; /* Adjust padding for touch target size */
+    background-color: #E5E7EB; /* Tailwind gray-200 */
+    color: #374151; /* Tailwind gray-700 */
+    font-weight: bold;
+    border-radius: 0.25rem; /* Tailwind rounded */
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.1rem; /* Adjust font size as needed */
+    user-select: none; /* Prevent text selection */
+}
+
+/* Style for guessed/disabled letters */
+.keyboard-letter.guessed {
+    background-color: #D1D5DB; /* Tailwind gray-300 */
+    color: #9CA3AF; /* Tailwind gray-400 */
+    cursor: default;
+    opacity: 0.6; /* Make them slightly transparent */
+    pointer-events: none; /* Disable clicks */
+}
+
+/* Hover effect for available letters */
+.keyboard-letter:not(.guessed):hover {
+    background-color: #D1D5DB; /* Tailwind gray-300 */
+}
