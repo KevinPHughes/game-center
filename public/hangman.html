@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hangman Game</title>
-    <link rel="stylesheet" href="hangman.css">
+    <link rel="stylesheet" href="styles/hangman.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         // Tailwind configuration
@@ -13,6 +13,8 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
+                        // Adding a new font family for headings
+                        heading: ['Roboto', 'sans-serif'],
                     },
                     // Keep monospace for other potential uses, but not strictly needed for SVG hangman
                     mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono", "Courier New", 'monospace'],
@@ -84,6 +86,6 @@
     </div>
 
 
-    <script src="hangman.js"></script>
+    <script src="scripts/hangman.js"></script>
 </body>
 </html>
