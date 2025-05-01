@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const wordSettingArea = document.getElementById('wordSettingArea');
     const secretWordInput = document.getElementById('secretWordInput');
     const setWordButton = document.getElementById('setWordButton');
+    const randomWordButton = document.getElementById('randomWordButton');
 
     const guessingArea = document.getElementById('guessingArea');
     const hangmanSVG = document.getElementById('hangmanSVG'); // Reference to the SVG element
@@ -47,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let guessedLetters = new Set();
     let incorrectGuesses = 0;
     const maxIncorrectGuesses = hangmanParts.filter(part => part.id.startsWith('man')).length;
+    let isRandomWord = false;
 
     let gamePhase = 'settingWord';
 
@@ -56,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Initializing game...");
         incorrectGuesses = 0;
         guessedLetters.clear();
+        isRandomWord = false;
 
         showWordSetting();
         gameStatus.textContent = '';
@@ -69,6 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
         secretWordInput.value = '';
 
         createKeyboard();
+
+        // Re-enable the random word button if it was disabled
+        randomWordButton.disabled = false;
+        randomWordButton.classList.remove('opacity-50');
 
         console.log("Game initialized to word setting phase.");
     }
@@ -128,6 +135,78 @@ document.addEventListener('DOMContentLoaded', () => {
                 gameStatus.textContent = '';
             }
         });
+    }
+
+    /**
+     * Handles fetching and setting a random word
+     */
+    async function handleRandomWord() {
+        try {
+            gameStatus.textContent = 'Fetching a random word...';
+            
+            // Disable the button while fetching
+            randomWordButton.disabled = true;
+            randomWordButton.classList.add('opacity-50');
+            
+            const word = await fetchRandomWord();
+            
+            if (word) {
+                secretWord = word.toUpperCase();
+                isRandomWord = true;
+                
+                // Create masked word
+                maskedWord = '_'.repeat(secretWord.length);
+                
+                displayMaskedWord();
+                gameStatus.textContent = 'Start guessing the random word!';
+                
+                showGuessing();
+                console.log("Random word set. Switched to guessing phase.");
+            } else {
+                gameStatus.textContent = 'Failed to get a random word. Please try again.';
+                // Re-enable the button
+                randomWordButton.disabled = false;
+                randomWordButton.classList.remove('opacity-50');
+            }
+        } catch (error) {
+            console.error("Error getting random word:", error);
+            gameStatus.textContent = 'Failed to get a random word. Please try again.';
+            // Re-enable the button
+            randomWordButton.disabled = false;
+            randomWordButton.classList.remove('opacity-50');
+        }
+    }
+    
+    /**
+     * Fetches a random word from an API
+     * @returns {Promise<string>} A promise that resolves to a random word
+     */
+    async function fetchRandomWord() {
+        try {
+            // Using the Random Word API
+            const response = await fetch('https://random-word-api.herokuapp.com/word');
+            const data = await response.json();
+            
+            // The API returns an array with a single word
+            if (data && data.length > 0) {
+                return data[0];
+            }
+            
+            throw new Error('Invalid response from random word API');
+        } catch (error) {
+            console.error("Error fetching random word:", error);
+            
+            // Fallback to a local list of words if the API fails
+            const fallbackWords = [
+                'APPLE', 'BANANA', 'COMPUTER', 'DEVELOPER', 'ELEPHANT', 
+                'FOOTBALL', 'GUITAR', 'HANGMAN', 'INTERNET', 'JAVASCRIPT',
+                'KEYBOARD', 'LIGHTHOUSE', 'MOUNTAIN', 'NOTEBOOK', 'OCEAN',
+                'PUZZLE', 'QUALITY', 'RAINBOW', 'SOFTWARE', 'TECHNOLOGY'
+            ];
+            
+            const randomIndex = Math.floor(Math.random() * fallbackWords.length);
+            return fallbackWords[randomIndex];
+        }
     }
 
     /**
@@ -322,7 +401,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkWin() {
         // Player wins if the masked word no longer contains underscores
         if (!maskedWord.includes('_')) {
-            gameStatus.textContent = `You won! The phrase was "${secretWord}"!`;
+            const winMessage = isRandomWord ? 
+                `You won! The random word was "${secretWord}"!` : 
+                `You won! The phrase was "${secretWord}"!`;
+            
+            gameStatus.textContent = winMessage;
             gameStatus.classList.add('win-text', 'win-animation');
 
             showWinModal();
@@ -333,7 +416,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function checkLoss() {
         if (incorrectGuesses >= maxIncorrectGuesses) {
-            gameStatus.textContent = `You lost! The word was "${secretWord}".`;
+            const loseMessage = isRandomWord ? 
+                `You lost! The random word was "${secretWord}".` : 
+                `You lost! The word was "${secretWord}".`;
+            
+            gameStatus.textContent = loseMessage;
             gameStatus.classList.add('lose-text', 'lose-animation');
             updateHangmanDisplay();
 
@@ -413,6 +500,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setWordButton.addEventListener('click', handleSetWord);
+    randomWordButton.addEventListener('click', handleRandomWord);
     playAgainButton.addEventListener('click', playAgain);
 
     secretWordInput.addEventListener('keypress', (event) => {
