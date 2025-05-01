@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Define the port the server will listen on
-const PORT = 3000; // You can use any available port
+const PORT = 6868; // You can use any available port
 
 // Create the HTTP server
 const server = http.createServer((req, res) => {

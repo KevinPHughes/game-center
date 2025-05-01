@@ -87,21 +87,153 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Switched to guessing phase.");
     }
 
+    /**
+     * Handles setting the secret word.
+     */
     function handleSetWord() {
-        const word = secretWordInput.value.trim().toUpperCase();
+        const phrase = secretWordInput.value.trim().toUpperCase();
 
-        if (word === '' || !/^[A-Z]+$/.test(word)) {
-            alert("Please enter a valid word using only letters.");
+        if (phrase === '') {
+            alert("Please enter a word or phrase.");
             return;
         }
 
-        secretWord = word;
-        maskedWord = '_'.repeat(secretWord.length);
-        maskedWordDisplay.textContent = maskedWord.split('').join(' ');
-        gameStatus.textContent = 'Start guessing!';
+        // Validate that the input only contains letters and spaces
+        if (!/^[A-Z\s]+$/.test(phrase)) {
+            alert("Please use only letters and spaces.");
+            return;
+        }
 
-        showGuessing();
-        console.log("Secret word set. Switched to guessing phase.");
+        // Validate each word against the dictionary
+        validatePhrase(phrase).then(isValid => {
+            if (isValid) {
+                secretWord = phrase;
+                
+                // Create masked word, preserving spaces
+                maskedWord = '';
+                for (let i = 0; i < secretWord.length; i++) {
+                    if (secretWord[i] === ' ') {
+                        maskedWord += ' ';
+                    } else {
+                        maskedWord += '_';
+                    }
+                }
+                
+                displayMaskedWord(); // Use the new function to display
+                gameStatus.textContent = 'Start guessing!';
+                
+                showGuessing();
+                console.log("Secret phrase set. Switched to guessing phase.");
+            } else {
+                gameStatus.textContent = '';
+            }
+        });
+    }
+
+    /**
+     * Validates a phrase by checking each word against a dictionary API.
+     * @param {string} phrase - The phrase to validate.
+     * @returns {Promise<boolean>} - Promise resolving to true if all words are valid.
+     */
+    async function validatePhrase(phrase) {
+        // Split the phrase into individual words
+        const words = phrase.split(/\s+/).filter(word => word.length > 0);
+        
+        if (words.length === 0) return false;
+        
+        try {
+            // Track which words are invalid
+            const invalidWords = [];
+            
+            // Check each word against the dictionary API
+            for (const word of words) {
+                const isValid = await checkWordInDictionary(word);
+                if (!isValid) {
+                    invalidWords.push(word.toLowerCase());
+                }
+            }
+            
+            // If any words are invalid, show an error
+            if (invalidWords.length > 0) {
+                if (invalidWords.length === 1) {
+                    alert(`"${invalidWords[0]}" is not in our dictionary. Please use common words.`);
+                } else {
+                    alert(`The following words are not in our dictionary: ${invalidWords.join(', ')}. Please use common words.`);
+                }
+                return false;
+            }
+            
+            return true;
+        } catch (error) {
+            console.error("Dictionary validation error:", error);
+            // If there's an API error, allow the word to proceed
+            alert("We couldn't validate some words. You can continue, but please ensure all words are valid.");
+            return true;
+        }
+    }
+
+    /**
+     * Checks if a word exists in the dictionary using an API.
+     * @param {string} word - The word to validate.
+     * @returns {Promise<boolean>} - Promise resolving to true if the word is valid.
+     */
+    async function checkWordInDictionary(word) {
+        if (word.length <= 1) return false;
+        
+        try {
+            // Use Free Dictionary API to check if the word exists
+            const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word.toLowerCase()}`);
+            return response.ok;
+        } catch (error) {
+            console.error(`Error checking word "${word}":`, error);
+            return true; // Assume valid on error
+        }
+    }
+
+    /**
+     * Displays the masked word, maintaining proper spacing and placing each word on a new line.
+     */
+    function displayMaskedWord() {
+        // Split the masked word by spaces to get individual words
+        const words = maskedWord.split(' ');
+        
+        // Process each word to add spaces between letters for display
+        const formattedWords = words.map(word => 
+            word.split('').join(' ')
+        );
+        
+        // Join the words with HTML line breaks
+        const displayText = formattedWords.join('<br>');
+        
+        maskedWordDisplay.innerHTML = displayText;
+    }
+
+    /**
+     * Updates the masked word display with correctly guessed letters.
+     * @param {string} guess - The correctly guessed letter.
+     */
+    function updateMaskedWordDisplay(guess) {
+        let newMaskedWord = '';
+        let wordChanged = false;
+        
+        for (let i = 0; i < secretWord.length; i++) {
+            if (secretWord[i] === ' ') {
+                newMaskedWord += ' '; // Preserve spaces
+            } else if (secretWord[i] === guess) {
+                newMaskedWord += guess;
+                if (maskedWord[i] !== guess) {
+                    wordChanged = true; // Flag if any underscore was replaced
+                }
+            } else {
+                newMaskedWord += maskedWord[i];
+            }
+        }
+        
+        maskedWord = newMaskedWord;
+        displayMaskedWord(); // Use the new display function
+
+        // Return true if the masked word actually changed
+        return wordChanged;
     }
 
     function createKeyboard() {
@@ -161,25 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`Guessed: ${guess}. Secret word: ${secretWord}. Masked word: ${maskedWord}`);
     }
 
-    function updateMaskedWordDisplay(guess) {
-        let newMaskedWord = '';
-        let wordChanged = false;
-        for (let i = 0; i < secretWord.length; i++) {
-            if (secretWord[i] === guess) {
-                newMaskedWord += guess;
-                if (maskedWord[i] !== guess) {
-                    wordChanged = true;
-                }
-            } else {
-                newMaskedWord += maskedWord[i];
-            }
-        }
-        maskedWord = newMaskedWord;
-        maskedWordDisplay.textContent = maskedWord.split('').join(' ');
-
-        return wordChanged;
-    }
-
     function updateHangmanDisplay() {
         hangmanParts.forEach(part => {
             if (part.id.startsWith('man')) {
@@ -203,15 +316,17 @@ document.addEventListener('DOMContentLoaded', () => {
         usedLettersDisplay.textContent = 'Used Letters: ' + Array.from(guessedLetters).sort().join(', ');
     }
 
+    /**
+     * Checks if the player has won the game.
+     */
     function checkWin() {
+        // Player wins if the masked word no longer contains underscores
         if (!maskedWord.includes('_')) {
-            gameStatus.textContent = `You won! The word was "${secretWord}"!`;
+            gameStatus.textContent = `You won! The phrase was "${secretWord}"!`;
             gameStatus.classList.add('win-text', 'win-animation');
 
             showWinModal();
-
             endGame();
-
             console.log("Game won.");
         }
     }
@@ -251,10 +366,10 @@ document.addEventListener('DOMContentLoaded', () => {
         loseModal.classList.remove('show-modal');
     }
 
+    // Update the win and lose modal functions to properly display phrases
     function showWinModal() {
         winWordReveal.textContent = secretWord;
         winModal.classList.add('show-modal');
-
         fireConfetti();
     }
 

@@ -28,6 +28,10 @@ body {
 /* Style for the masked word display */
 #maskedWordDisplay {
     /* Add any specific styles for the masked word if needed */
+    word-break: break-word; /* Allow breaking lines for long phrases */
+    max-width: 100%;
+    line-height: 1.5;
+    letter-spacing: 0.1em;
 }
 
 /* Style for input fields */
