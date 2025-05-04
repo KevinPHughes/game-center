@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Game State Variables ---
-    let currentPlayer = 'X'; // 'X' always starts
+    let currentPlayer = 'X'; // 'X' starts the first game
+    let lastStartingPlayer = 'O'; // Track who started the last game (initially 'O' so 'X' starts first)
     let boardState = ['', '', '', '', '', '', '', '', '']; // Represents the 3x3 board, '' means empty
     let gameActive = true; // Flag to check if the game is currently playable
     let winningCombination = null; // To store the winning line indices
@@ -51,7 +52,11 @@ document.addEventListener('DOMContentLoaded', () => {
         boardElement.innerHTML = ''; // Clear previous cells if any
         boardState = ['', '', '', '', '', '', '', '', '']; // Reset internal board state
         gameActive = true; // Game is active again
-        currentPlayer = 'X'; // X starts
+        
+        // Alternate the starting player for a new game
+        currentPlayer = lastStartingPlayer === 'X' ? 'O' : 'X';
+        lastStartingPlayer = currentPlayer; // Remember who starts this game
+        
         winningCombination = null; // Clear any previous winning line
 
         loadGameData(); // Load all game data (scores and names) from localStorage
@@ -322,7 +327,11 @@ document.addEventListener('DOMContentLoaded', () => {
         boardElement.innerHTML = '';
         boardState = ['', '', '', '', '', '', '', '', ''];
         gameActive = true;
-        currentPlayer = 'X';
+        
+        // Alternate the starting player for the next game
+        currentPlayer = lastStartingPlayer === 'X' ? 'O' : 'X';
+        lastStartingPlayer = currentPlayer; // Remember who starts this game
+        
         winningCombination = null;
         statusElement.textContent = `${getCurrentPlayerName()}'s turn`;
 
