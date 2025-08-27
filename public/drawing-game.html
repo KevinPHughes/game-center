@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kid's Drawing Game</title>
+    <link rel="stylesheet" href="styles/drawing-game.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind configuration
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Comic Sans MS', 'Comic Sans', 'cursive'],
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-indigo-100 flex flex-col items-center justify-center min-h-screen font-sans p-4">
+    <h1 class="text-4xl font-bold text-purple-800 mb-4">Kid's Drawing Game</h1>
+    
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl text-center mb-6">
+        <!-- Challenge Section -->
+        <div class="mb-4">
+            <h2 class="text-2xl font-bold text-pink-600 mb-2">Drawing Challenge:</h2>
+            <p id="challengeText" class="text-xl font-bold text-gray-700">Can you draw a happy face?</p>
+            <button id="newChallengeButton" class="mt-2 px-4 py-2 bg-purple-500 text-white font-bold rounded-lg shadow hover:bg-purple-600 transition duration-200">
+                New Challenge
+            </button>
+        </div>
+
+        <!-- Canvas Container -->
+        <div class="canvas-container border-4 border-blue-300 rounded-lg overflow-hidden mb-6">
+            <canvas id="drawingCanvas" class="bg-white cursor-crosshair"></canvas>
+        </div>
+        
+        <!-- Color Selection -->
+        <div class="mb-6">
+            <h3 class="text-xl font-bold text-gray-700 mb-2">Choose a Color:</h3>
+            <div id="colorPalette" class="flex flex-wrap justify-center gap-2">
+                <button class="color-button bg-red-500" data-color="#ef4444"></button>
+                <button class="color-button bg-orange-500" data-color="#f97316"></button>
+                <button class="color-button bg-yellow-400" data-color="#facc15"></button>
+                <button class="color-button bg-green-500" data-color="#22c55e"></button>
+                <button class="color-button bg-blue-500" data-color="#3b82f6"></button>
+                <button class="color-button bg-purple-500" data-color="#a855f7"></button>
+                <button class="color-button bg-pink-500" data-color="#ec4899"></button>
+                <button class="color-button bg-black" data-color="#000000"></button>
+                <button class="color-button bg-white border border-gray-300" data-color="#ffffff"></button>
+            </div>
+        </div>
+        
+        <!-- Brush Size -->
+        <div class="mb-6">
+            <h3 class="text-xl font-bold text-gray-700 mb-2">Brush Size:</h3>
+            <div class="flex justify-center items-center gap-2">
+                <button id="smallBrush" class="brush-button" data-size="5">Small</button>
+                <button id="mediumBrush" class="brush-button" data-size="10">Medium</button>
+                <button id="largeBrush" class="brush-button" data-size="15">Large</button>
+            </div>
+        </div>
+        
+        <!-- Stamps -->
+        <div class="mb-6">
+            <h3 class="text-xl font-bold text-gray-700 mb-2">Stamps:</h3>
+            <div class="flex flex-wrap justify-center gap-2">
+                <button class="stamp-button" data-stamp="❤️">❤️</button>
+                <button class="stamp-button" data-stamp="⭐">⭐</button>
+                <button class="stamp-button" data-stamp="🌈">🌈</button>
+                <button class="stamp-button" data-stamp="🌸">🌸</button>
+                <button class="stamp-button" data-stamp="🦄">🦄</button>
+                <button class="stamp-button" data-stamp="🚀">🚀</button>
+            </div>
+        </div>
+        
+        <!-- Controls -->
+        <div class="flex justify-center gap-4">
+            <button id="clearButton" class="px-6 py-3 bg-red-500 text-white font-bold rounded-lg shadow hover:bg-red-600 transition duration-200">
+                Clear Drawing
+            </button>
+            <button id="saveButton" class="px-6 py-3 bg-green-600 text-white font-bold rounded-lg shadow hover:bg-green-700 transition duration-200">
+                Save Drawing
+            </button>
+        </div>
+    </div>
+    
+    <!-- Gallery Modal -->
+    <div id="galleryModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg max-w-2xl mx-4">
+            <h2 class="text-2xl font-bold text-purple-800 mb-4">Your Art Gallery</h2>
+            <div id="galleryContainer" class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4 max-h-80 overflow-y-auto">
+                <!-- Saved drawings will appear here -->
+            </div>
+            <button id="closeGalleryButton" class="px-6 py-3 bg-blue-600 text-white font-bold rounded-lg shadow hover:bg-blue-700 transition duration-200">
+                Close Gallery
+            </button>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        <button id="galleryButton" class="px-6 py-3 bg-purple-600 text-white font-bold rounded-lg shadow hover:bg-purple-700 transition duration-200 mb-4">
+            Open Art Gallery
+        </button>
+        <a href="index.html" class="px-6 py-3 bg-gray-600 text-white font-bold rounded-lg shadow hover:bg-gray-700 transition duration-200 text-center block">
+            Back to Games
+        </a>
+    </div>
+
+    <script src="scripts/drawing-game.js"></script>
+</body>
+</html>

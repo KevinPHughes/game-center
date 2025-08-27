@@ -1,0 +1,48 @@
+.winning-cell {
+    box-shadow: 0 0 0 2px white, 0 0 0 4px gold;
+    z-index: 10;
+    position: relative;
+}
+
+/* Animation for disc dropping */
+.disc {
+    transition: transform 0.5s ease-in, opacity 0.2s ease-in;
+}
+
+/* For better hover effects on column indicators */
+.column-indicator:hover svg {
+    transform: translateY(2px);
+    color: #4a5568;
+}
+
+/* Text colors for winner message */
+.text-player1 {
+    color: #e53e3e;
+}
+
+.text-player2 {
+    color: #ecc94b;
+}
+
+/* Ensure player colors are always applied and not overridden */
+.disc.bg-player1 {
+    background-color: #e53e3e !important;
+}
+
+.disc.bg-player2 {
+    background-color: #ecc94b !important;
+}
+
+/* Pulse animation for winning cells */
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 2px white, 0 0 0 4px gold;
+    }
+    50% {
+        box-shadow: 0 0 0 4px white, 0 0 0 8px gold;
+    }
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

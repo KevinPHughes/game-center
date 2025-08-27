@@ -1,0 +1,73 @@
+.canvas-container {
+    position: relative;
+    aspect-ratio: 1;
+}
+
+#gameCanvas {
+    background-color: #f7fafc;
+    width: 100%;
+    height: 100%;
+    display: block;
+    touch-action: none;
+}
+
+/* Mobile controls styling */
+#mobileControls button {
+    transition: all 0.1s ease;
+    padding: 1rem;
+    margin: 0.25rem;
+}
+
+#mobileControls button:active {
+    background-color: #a0aec0;
+    transform: scale(0.92);
+}
+
+/* Larger tap targets for control buttons */
+#upButton, #downButton, #leftButton, #rightButton {
+    min-height: 3.5rem;
+    min-width: 3.5rem;
+}
+
+/* Start button (center of mobile controls) styling */
+#startButton {
+    transition: all 0.2s ease;
+}
+
+#startButton:active {
+    background-color: #2f855a;
+    transform: scale(0.9);
+}
+
+/* Modal animations */
+#gameOverModal, #instructionsModal {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 480px) {
+    .canvas-container {
+        width: 300px;
+        height: 300px;
+    }
+}
+
+/* Improved mobile controls for better touch experience */
+@media (max-width: 768px) {
+    /* Make sure the game canvas fits mobile screens */
+    .canvas-container {
+        width: 100%;
+        max-width: 350px;
+        max-height: 350px;
+    }
+}
+
+/* Better active state for mobile control buttons */
+#mobileControls button:active svg {
+    transform: scale(0.9);
+}

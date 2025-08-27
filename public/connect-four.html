@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Four Game</title>
+    <link rel="stylesheet" href="styles/connect-four.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind configuration
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'player1': '#e53e3e', // Red
+                        'player2': '#ecc94b', // Yellow
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen font-sans p-4">
+    <h1 class="text-4xl font-bold text-gray-800 mb-6">Connect Four</h1>
+    
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl text-center mb-6">
+        <!-- Player Name Input Section -->
+        <div class="mb-6 flex flex-wrap justify-center gap-4">
+            <div class="flex items-center space-x-2">
+                <span class="h-4 w-4 rounded-full bg-player1"></span>
+                <input type="text" id="player1Name" placeholder="Red Player" 
+                    class="p-2 border border-red-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500 w-32">
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="h-4 w-4 rounded-full bg-player2"></span>
+                <input type="text" id="player2Name" placeholder="Yellow Player" 
+                    class="p-2 border border-yellow-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500 w-32">
+            </div>
+        </div>
+        
+        <!-- Score Display -->
+        <div id="scoreDisplay" class="text-xl text-gray-700 mb-4">
+            <span id="player1NameDisplay">Red</span>: <span id="player1Score">0</span> | 
+            <span id="player2NameDisplay">Yellow</span>: <span id="player2Score">0</span>
+        </div>
+        
+        <!-- Game Status -->
+        <div id="gameStatus" class="text-2xl font-semibold text-gray-700 h-10 mb-4">
+            Red's turn
+        </div>
+        
+        <!-- Column Selection Indicators -->
+        <div id="columnIndicators" class="grid grid-cols-7 gap-1 mb-2 max-w-lg mx-auto">
+            <!-- Will be filled by JS -->
+        </div>
+        
+        <!-- Game Board -->
+        <div id="gameBoard" class="grid grid-cols-7 gap-1 bg-blue-600 p-2 rounded-lg max-w-lg mx-auto">
+            <!-- Will be filled by JS -->
+        </div>
+        
+        <!-- Game Controls -->
+        <div class="mt-6 flex justify-center gap-4">
+            <button id="resetButton" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200">
+                Reset Game
+            </button>
+            <button id="clearScoresButton" class="px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-200">
+                Clear Scores
+            </button>
+        </div>
+    </div>
+    
+    <!-- Winner Modal -->
+    <div id="winnerModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg text-center max-w-md mx-4">
+            <h2 class="text-2xl font-bold mb-4">Game Over!</h2>
+            <p id="winnerMessage" class="text-xl mb-6">Player wins!</p>
+            <button id="playAgainButton" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200">
+                Play Again
+            </button>
+        </div>
+    </div>
+    
+    <div class="mt-6">
+        <a href="index.html" class="px-6 py-3 bg-gray-600 text-white font-semibold rounded-lg shadow hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-200 text-center">
+            Back to Games
+        </a>
+    </div>
+
+    <script src="scripts/connect-four.js"></script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <link rel="stylesheet" href="styles/snake.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind configuration
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'snake': '#38a169', // Green
+                        'food': '#e53e3e',  // Red
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen font-sans p-4">
+    <h1 class="text-4xl font-bold text-gray-800 mb-6">Snake</h1>
+    
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl text-center mb-6">
+        <!-- Game Information -->
+        <div class="mb-4 flex justify-between items-center">
+            <div class="text-xl font-semibold text-gray-700">
+                Score: <span id="scoreDisplay">0</span>
+            </div>
+            <div class="text-xl font-semibold text-gray-700">
+                High Score: <span id="highScoreDisplay">0</span>
+            </div>
+        </div>
+        
+        <!-- Game Status -->
+        <div id="gameStatus" class="text-xl font-semibold text-gray-700 h-8 mb-4">
+            Press Start or any arrow key to begin
+        </div>
+        
+        <!-- Game Speed Control -->
+        <div class="mb-4 flex items-center justify-center">
+            <label for="speedSelect" class="mr-2 font-semibold text-gray-700">Speed:</label>
+            <select id="speedSelect" class="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                <option value="slow">Slow</option>
+                <option value="medium" selected>Medium</option>
+                <option value="fast">Fast</option>
+            </select>
+        </div>
+        
+        <!-- Game Canvas -->
+        <div class="canvas-container mb-4 mx-auto" style="width: 400px; height: 400px; max-width: 100%;">
+            <canvas id="gameCanvas" class="border-2 border-gray-300 rounded-lg"></canvas>
+        </div>
+        
+        <!-- Mobile Controls -->
+        <div id="mobileControls" class="grid grid-cols-3 gap-2 mb-4 md:hidden">
+            <div></div>
+            <button id="upButton" class="p-3 bg-gray-200 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                </svg>
+            </button>
+            <div></div>
+            <button id="leftButton" class="p-3 bg-gray-200 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <div class="flex items-center justify-center">
+                <button id="startButton" class="p-2 bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    </svg>
+                </button>
+            </div>
+            <button id="rightButton" class="p-3 bg-gray-200 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+            <div></div>
+            <button id="downButton" class="p-3 bg-gray-200 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div></div>
+        </div>
+        
+        <!-- Game Controls -->
+        <div class="flex justify-center gap-4">
+            <button id="desktopStartButton" class="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-200 hidden md:block">
+                Start Game
+            </button>
+            <button id="resetButton" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200">
+                Reset Game
+            </button>
+            <button id="clearScoreButton" class="px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-200">
+                Clear High Score
+            </button>
+        </div>
+    </div>
+    
+    <!-- Game Over Modal -->
+    <div id="gameOverModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg text-center max-w-md mx-4">
+            <h2 class="text-2xl font-bold mb-4">Game Over!</h2>
+            <p id="finalScoreMessage" class="text-xl mb-6">Your score: 0</p>
+            <div id="newHighScoreMessage" class="text-lg text-green-600 font-bold mb-6 hidden">New High Score!</div>
+            <button id="playAgainButton" class="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-200">
+                Play Again
+            </button>
+        </div>
+    </div>
+    
+    <!-- Instructions Modal -->
+    <div id="instructionsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-lg text-center max-w-md mx-4">
+            <h2 class="text-2xl font-bold mb-4">How to Play Snake</h2>
+            <div class="text-left mb-6">
+                <p class="mb-2">• Use the <strong>arrow keys</strong> to control the snake</p>
+                <p class="mb-2">• Collect the red food to grow and earn points</p>
+                <p class="mb-2">• Avoid hitting the walls or your own tail</p>
+                <p class="mb-2">• On mobile, use the on-screen direction buttons</p>
+                <p class="mb-4">• Change game speed using the speed selector</p>
+                <p class="text-sm text-gray-500">Note: Game works best on desktop with keyboard</p>
+            </div>
+            <button id="startPlayingButton" class="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-200">
+                Start Playing
+            </button>
+        </div>
+    </div>
+    
+    <div class="mt-6">
+        <a href="index.html" class="px-6 py-3 bg-gray-600 text-white font-semibold rounded-lg shadow hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-200 text-center">
+            Back to Games
+        </a>
+    </div>
+
+    <script src="scripts/snake.js"></script>
+</body>
+</html>
