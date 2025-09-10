@@ -1,0 +1,126 @@
+/* Custom styles for the boids simulation */
+
+/* Custom slider styling */
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    background: #4B5563;
+    outline: none;
+    border-radius: 0.5rem;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #3B82F6;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s;
+}
+
+.slider::-webkit-slider-thumb:hover {
+    background: #2563EB;
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #3B82F6;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s;
+}
+
+.slider::-moz-range-thumb:hover {
+    background: #2563EB;
+}
+
+/* Custom checkbox styling */
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #6B7280;
+    border-radius: 3px;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+}
+
+input[type="checkbox"]:checked {
+    background: #3B82F6;
+    border-color: #3B82F6;
+}
+
+input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Smooth transitions for hover effects */
+button {
+    transition: all 0.2s ease-in-out;
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+/* Canvas container styling */
+#simulationCanvas {
+    display: block;
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #334155 100%);
+}
+
+/* Scrollbar styling for control panel */
+.overflow-y-auto::-webkit-scrollbar {
+    width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+    background: #374151;
+    border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+    background: #6B7280;
+    border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: #9CA3AF;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .w-80 {
+        width: 16rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .w-80 {
+        width: 14rem;
+    }
+    
+    .space-y-6 > * + * {
+        margin-top: 1rem;
+    }
+    
+    .space-y-3 > * + * {
+        margin-top: 0.75rem;
+    }
+}

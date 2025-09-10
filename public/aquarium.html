@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Aquarium Ecosystem</title>
+    <link rel="stylesheet" href="styles/aquarium.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-b from-blue-900 to-blue-950 text-white font-sans overflow-hidden">
+    <div class="absolute inset-0 flex">
+        <!-- Control Panel -->
+        <div class="w-80 bg-blue-900 bg-opacity-90 backdrop-blur-sm p-6 overflow-y-auto border-r border-blue-700">
+            <div class="mb-6">
+                <a href="index.html" class="inline-flex items-center text-cyan-400 hover:text-cyan-300 transition-colors">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                    Back to Game Hub
+                </a>
+            </div>
+
+            <h1 class="text-2xl font-bold mb-6 text-center text-cyan-300">🐠 Virtual Aquarium</h1>
+            
+            <div class="space-y-6">
+                <!-- Fish Population -->
+                <div class="bg-blue-800 bg-opacity-50 p-4 rounded-lg border border-blue-600">
+                    <h3 class="text-lg font-semibold mb-3 text-cyan-300 flex items-center">
+                        🐟 Fish Population
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Small Fish (Schooling)</label>
+                            <input type="range" id="smallFishCount" min="0" max="150" value="60" 
+                                   class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer slider">
+                            <div class="text-center text-sm text-cyan-200 mt-1">
+                                <span id="smallFishCountValue">60</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Medium Fish</label>
+                            <input type="range" id="mediumFishCount" min="0" max="50" value="20" 
+                                   class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer slider">
+                            <div class="text-center text-sm text-cyan-200 mt-1">
+                                <span id="mediumFishCountValue">20</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Large Fish</label>
+                            <input type="range" id="largeFishCount" min="0" max="20" value="8" 
+                                   class="w-full h-2 bg-blue-700 rounded-lg appearance-none cursor-pointer slider">
+                            <div class="text-center text-sm text-cyan-200 mt-1">
+                                <span id="largeFishCountValue">8</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Predators -->
+                <div class="bg-red-900 bg-opacity-40 p-4 rounded-lg border border-red-700">
+                    <h3 class="text-lg font-semibold mb-3 text-red-300 flex items-center">
+                        🦈 Predators
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Number of Sharks</label>
+                            <input type="range" id="sharkCount" min="0" max="8" value="2" 
+                                   class="w-full h-2 bg-red-800 rounded-lg appearance-none cursor-pointer slider">
+                            <div class="text-center text-sm text-red-200 mt-1">
+                                <span id="sharkCountValue">2</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Hunting Aggression</label>
+                            <input type="range" id="huntingAggression" min="0.1" max="2" step="0.1" value="1" 
+                                   class="w-full h-2 bg-red-800 rounded-lg appearance-none cursor-pointer slider">
+                            <div class="text-center text-sm text-red-200 mt-1">
+                                <span id="huntingAggressionValue">1.0</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Fear Radius</label>
+                            <input type="range" id="fearRadius" min="30" max="150" value="80" 
+                                   class="w-full h-2 bg-red-800 rounded-lg appearance-none cursor-pointer slider">
+                            <div class="text-center text-sm text-red-200 mt-1">
+                                <span id="fearRadiusValue">80</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Schooling Behavior -->
+                <div class="bg-green-900 bg-opacity-40 p-4 rounded-lg border border-green-700">
+                    <h3 class="text-lg font-semibold mb-3 text-green-300 flex items-center">
+                        🐠 Schooling Behavior
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Schooling Strength</label>
+                            <input type="range" id="schoolingStrength" min="0" max="3" step="0.1" value="1.5" 
+                                   class="w-full h-2 bg-green-800 rounded-lg appearance-none cursor-pointer slider">
+                            <div class="text-center text-sm text-green-200 mt-1">
+                                <span id="schoolingStrengthValue">1.5</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Swimming Speed</label>
+                            <input type="range" id="swimmingSpeed" min="0.5" max="3" step="0.1" value="1.2" 
+                                   class="w-full h-2 bg-green-800 rounded-lg appearance-none cursor-pointer slider">
+                            <div class="text-center text-sm text-green-200 mt-1">
+                                <span id="swimmingSpeedValue">1.2</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Panic Response</label>
+                            <input type="range" id="panicResponse" min="1" max="5" step="0.5" value="3" 
+                                   class="w-full h-2 bg-green-800 rounded-lg appearance-none cursor-pointer slider">
+                            <div class="text-center text-sm text-green-200 mt-1">
+                                <span id="panicResponseValue">3.0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Environment -->
+                <div class="bg-purple-900 bg-opacity-40 p-4 rounded-lg border border-purple-700">
+                    <h3 class="text-lg font-semibold mb-3 text-purple-300 flex items-center">
+                        🌊 Environment
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Current Strength</label>
+                            <input type="range" id="currentStrength" min="0" max="2" step="0.1" value="0.5" 
+                                   class="w-full h-2 bg-purple-800 rounded-lg appearance-none cursor-pointer slider">
+                            <div class="text-center text-sm text-purple-200 mt-1">
+                                <span id="currentStrengthValue">0.5</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Bubble Density</label>
+                            <input type="range" id="bubbleDensity" min="0" max="20" value="8" 
+                                   class="w-full h-2 bg-purple-800 rounded-lg appearance-none cursor-pointer slider">
+                            <div class="text-center text-sm text-purple-200 mt-1">
+                                <span id="bubbleDensityValue">8</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Kelp Density</label>
+                            <input type="range" id="kelpDensity" min="0" max="15" value="5" 
+                                   class="w-full h-2 bg-purple-800 rounded-lg appearance-none cursor-pointer slider">
+                            <div class="text-center text-sm text-purple-200 mt-1">
+                                <span id="kelpDensityValue">5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visual Effects -->
+                <div class="bg-yellow-900 bg-opacity-40 p-4 rounded-lg border border-yellow-700">
+                    <h3 class="text-lg font-semibold mb-3 text-yellow-300 flex items-center">
+                        ✨ Visual Effects
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="showTrails" checked class="mr-2">
+                                <span>Show Swimming Trails</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="showBubbles" checked class="mr-2">
+                                <span>Show Bubbles</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="showKelp" checked class="mr-2">
+                                <span>Show Kelp Forest</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="depthShading" checked class="mr-2">
+                                <span>Depth Shading</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="schoolHighlight" checked class="mr-2">
+                                <span>Highlight Schools</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feeding & Interaction -->
+                <div class="bg-orange-900 bg-opacity-40 p-4 rounded-lg border border-orange-700">
+                    <h3 class="text-lg font-semibold mb-3 text-orange-300 flex items-center">
+                        🍤 Interaction
+                    </h3>
+                    <div class="space-y-3">
+                        <button id="feedFish" class="w-full px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-colors">
+                            Drop Food
+                        </button>
+                        <button id="scarefish" class="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors">
+                            Scare Fish
+                        </button>
+                        <div>
+                            <label class="flex items-center">
+                                <input type="checkbox" id="followMouse" class="mr-2">
+                                <span>Fish Follow Cursor</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Control Buttons -->
+                <div class="space-y-3">
+                    <button id="resetAquarium" class="w-full px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded-lg transition-colors">
+                        Reset Aquarium
+                    </button>
+                    <button id="pauseBtn" class="w-full px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-semibold rounded-lg transition-colors">
+                        Pause
+                    </button>
+                </div>
+
+                <!-- Statistics -->
+                <div class="bg-blue-800 bg-opacity-30 p-3 rounded-lg border border-blue-600">
+                    <h4 class="text-sm font-semibold mb-2 text-cyan-300">🐠 Ecosystem Stats</h4>
+                    <div class="text-xs text-cyan-200 space-y-1">
+                        <div>Total Fish: <span id="totalFish" class="text-cyan-300 font-semibold">0</span></div>
+                        <div>Schools Formed: <span id="schoolsFormed" class="text-green-300 font-semibold">0</span></div>
+                        <div>Fish Eaten: <span id="fishEaten" class="text-red-300 font-semibold">0</span></div>
+                        <div>Food Dropped: <span id="foodDropped" class="text-orange-300 font-semibold">0</span></div>
+                        <div>Ecosystem Health: <span id="ecosystemHealth" class="text-cyan-300 font-semibold">100%</span></div>
+                    </div>
+                </div>
+
+                <!-- Info -->
+                <div class="bg-blue-800 bg-opacity-20 p-3 rounded-lg text-xs text-cyan-200 border border-blue-600">
+                    <p><strong class="text-cyan-300">🐠 How it works:</strong></p>
+                    <p>• Small fish form protective schools</p>
+                    <p>• Predators hunt individual fish</p>
+                    <p>• Fish flee when threatened</p>
+                    <p>• Environmental currents affect movement</p>
+                    <p><strong class="text-orange-300">🖱️ Click to feed fish or scare them!</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aquarium Canvas -->
+        <div class="flex-1 relative aquarium-container">
+            <canvas id="aquariumCanvas" class="w-full h-full cursor-pointer"></canvas>
+            
+            <!-- Performance Info -->
+            <div class="absolute top-4 right-4 bg-black bg-opacity-60 px-3 py-2 rounded text-sm backdrop-blur-sm">
+                <div>FPS: <span id="fpsCounter" class="text-cyan-300">--</span></div>
+                <div>Entities: <span id="entityCounter" class="text-cyan-300">--</span></div>
+            </div>
+
+            <!-- Mode Indicator -->
+            <div class="absolute top-4 left-4 bg-black bg-opacity-60 px-3 py-2 rounded text-sm backdrop-blur-sm">
+                <div>Mode: <span id="modeIndicator" class="text-green-400">Observe</span></div>
+                <div class="text-xs text-gray-300 mt-1">Click to interact with fish</div>
+            </div>
+
+            <!-- Depth Indicator -->
+            <div class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-40 px-2 py-4 rounded text-xs backdrop-blur-sm">
+                <div class="writing-mode-vertical text-cyan-300 font-semibold">DEPTH</div>
+                <div class="h-32 w-1 bg-gradient-to-b from-cyan-300 via-blue-400 to-blue-900 rounded mt-2"></div>
+                <div class="text-center mt-2 text-cyan-300">DEEP</div>
+            </div>
+
+            <!-- Species Legend -->
+            <div class="absolute bottom-4 left-4 bg-black bg-opacity-60 px-3 py-2 rounded text-xs backdrop-blur-sm">
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="flex items-center">
+                        <div class="w-3 h-2 bg-yellow-400 rounded-full mr-2"></div>
+                        <span>Small Fish</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-4 h-3 bg-orange-400 rounded-full mr-2"></div>
+                        <span>Medium Fish</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-5 h-3 bg-blue-400 rounded-full mr-2"></div>
+                        <span>Large Fish</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-6 h-4 bg-red-500 rounded-full mr-2"></div>
+                        <span>Sharks</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/aquarium.js"></script>
+</body>
+</html>
